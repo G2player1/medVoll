@@ -2,6 +2,7 @@ package Enos.SpringProject.medVoll.models.associations;
 
 import Enos.SpringProject.medVoll.models.Doctor;
 import Enos.SpringProject.medVoll.models.Expertise;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -20,8 +21,10 @@ public class DoctorExpertiseAssociation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JsonBackReference
     private Doctor doctor;
     @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JsonBackReference
     private Expertise expertise;
 
     public DoctorExpertiseAssociation(Doctor doctor,Expertise expertise){

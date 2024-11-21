@@ -4,6 +4,7 @@ import Enos.SpringProject.medVoll.enums.ExpertiseEnum;
 import Enos.SpringProject.medVoll.exceptions.NullObjectException;
 import Enos.SpringProject.medVoll.models.associations.DoctorExpertiseAssociation;
 import Enos.SpringProject.medVoll.models.dto.ExpertiseDTO;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -28,6 +29,7 @@ public class Expertise {
     @Column(name = "expertise",nullable = false)
     private ExpertiseEnum expertise;
     @OneToMany(mappedBy = "expertise",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<DoctorExpertiseAssociation> doctors;
 
     public Expertise(ExpertiseDTO expertiseDTO){

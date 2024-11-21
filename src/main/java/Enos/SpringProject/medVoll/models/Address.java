@@ -2,6 +2,7 @@ package Enos.SpringProject.medVoll.models;
 
 import Enos.SpringProject.medVoll.exceptions.NullObjectException;
 import Enos.SpringProject.medVoll.models.dto.AddressDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -34,6 +35,7 @@ public class Address {
     @Column(name = "complemento",length = 2000)
     private String complemento;
     @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JsonBackReference
     private Doctor doctor;
 
     public Address(AddressDTO addressDTO){
