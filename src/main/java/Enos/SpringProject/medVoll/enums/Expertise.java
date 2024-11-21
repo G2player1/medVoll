@@ -14,7 +14,7 @@ public enum Expertise {
         this.expertise = expertise;
     }
 
-    public Expertise fromString(String value){
+    public static Expertise fromString(String value){
         for (Expertise e : Expertise.values()){
             if(e.expertise.equalsIgnoreCase(value)){
                 return e;
