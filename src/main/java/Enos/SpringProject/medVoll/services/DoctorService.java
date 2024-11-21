@@ -11,6 +11,8 @@ import Enos.SpringProject.medVoll.models.dto.ExpertiseDTO;
 import Enos.SpringProject.medVoll.repositorys.IDoctorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,11 +39,11 @@ public class DoctorService {
     }
 
     @Transactional
-    public List<DoctorListingDataDTO> getDoctorsInDB(){
-        return doctorRepository.findAll().stream().map(DoctorListingDataDTO::new).toList();
+    public Page<DoctorListingDataDTO> getDoctorsInDB(Pageable pageable){
+        return doctorRepository.findAll(pageable).map(DoctorListingDataDTO::new);
     }
 
-    public List<DoctorListingDataDTO> getDoctorsInDbByExpertise(String expertise) {
-        return doctorRepository.findDoctorsByExpertise(ExpertiseEnum.fromString(expertise));
+    public Page<DoctorListingDataDTO> getDoctorsInDbByExpertise(Pageable pageable,String expertise) {
+        return doctorRepository.findDoctorsByExpertise(pageable,ExpertiseEnum.fromString(expertise));
     }
 }
