@@ -1,15 +1,19 @@
 package Enos.SpringProject.medVoll.services;
 
+import Enos.SpringProject.medVoll.enums.ExpertiseEnum;
 import Enos.SpringProject.medVoll.models.Address;
 import Enos.SpringProject.medVoll.models.Doctor;
 import Enos.SpringProject.medVoll.models.Expertise;
 import Enos.SpringProject.medVoll.models.associations.DoctorExpertiseAssociation;
 import Enos.SpringProject.medVoll.models.dto.DoctorDTO;
+import Enos.SpringProject.medVoll.models.dto.DoctorListingDataDTO;
 import Enos.SpringProject.medVoll.models.dto.ExpertiseDTO;
 import Enos.SpringProject.medVoll.repositorys.IDoctorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DoctorService {
@@ -30,5 +34,14 @@ public class DoctorService {
             doctor.addExpertises(doctorExpertise);
         }
         doctorRepository.save(doctor);
+    }
+
+    @Transactional
+    public List<DoctorListingDataDTO> getDoctorsInDB(){
+        return doctorRepository.findAll().stream().map(DoctorListingDataDTO::new).toList();
+    }
+
+    public List<DoctorListingDataDTO> getDoctorsInDbByExpertise(String expertise) {
+        return doctorRepository.findDoctorsByExpertise(ExpertiseEnum.fromString(expertise));
     }
 }
