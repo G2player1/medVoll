@@ -2,7 +2,7 @@ package Enos.SpringProject.medVoll.enums;
 
 import Enos.SpringProject.medVoll.exceptions.CantGetEnumException;
 
-public enum Expertise {
+public enum ExpertiseEnum {
     ORTHOPEDY("ortopedia"),
     CARDIOLOGY("cardiologia"),
     GYNECOLOGY("ginecologia"),
@@ -10,12 +10,12 @@ public enum Expertise {
 
     private String expertise;
 
-    Expertise(String expertise){
+    ExpertiseEnum(String expertise){
         this.expertise = expertise;
     }
 
-    public static Expertise fromString(String value){
-        for (Expertise e : Expertise.values()){
+    public static ExpertiseEnum fromString(String value){
+        for (ExpertiseEnum e : ExpertiseEnum.values()){
             if(e.expertise.equalsIgnoreCase(value)){
                 return e;
             }
