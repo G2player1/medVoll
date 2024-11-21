@@ -5,26 +5,33 @@ import Enos.SpringProject.medVoll.exceptions.NullObjectException;
 import Enos.SpringProject.medVoll.models.associations.DoctorExpertiseAssociation;
 import Enos.SpringProject.medVoll.models.dto.ExpertiseDTO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "expertises")
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Expertise {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "expertise",nullable = false)
     private ExpertiseEnum expertise;
     @OneToMany(mappedBy = "expertise",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<DoctorExpertiseAssociation> doctors;
 
-    public Expertise(){}
-
     public Expertise(ExpertiseDTO expertiseDTO){
+        doctors = new ArrayList<>();
         this.expertise = expertiseDTO.getExpertiseEnum();
     }
 

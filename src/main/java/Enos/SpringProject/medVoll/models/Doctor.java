@@ -4,13 +4,20 @@ import Enos.SpringProject.medVoll.exceptions.NullObjectException;
 import Enos.SpringProject.medVoll.models.associations.DoctorExpertiseAssociation;
 import Enos.SpringProject.medVoll.models.dto.DoctorDTO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "doctors")
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Doctor {
 
     @Id
@@ -27,9 +34,8 @@ public class Doctor {
     @OneToOne(mappedBy = "doctor",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private Address address;
 
-    public Doctor(){}
-
     public Doctor(DoctorDTO doctorDTO){
+        expertises = new ArrayList<>();
         this.name = doctorDTO.nome();
         this.email = doctorDTO.email();
         this.crm = doctorDTO.crm();

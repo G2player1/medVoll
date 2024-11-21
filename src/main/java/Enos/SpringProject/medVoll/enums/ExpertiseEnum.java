@@ -22,4 +22,8 @@ public enum ExpertiseEnum {
         }
         throw new CantGetEnumException("cant get enum by passed value");
     }
+
+    public String toPortuguese(){
+        return this.expertise;
+    }
 }

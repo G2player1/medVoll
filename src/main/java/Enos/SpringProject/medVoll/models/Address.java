@@ -3,11 +3,17 @@ package Enos.SpringProject.medVoll.models;
 import Enos.SpringProject.medVoll.exceptions.NullObjectException;
 import Enos.SpringProject.medVoll.models.dto.AddressDTO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "addresses")
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Address {
 
     @Id
@@ -27,10 +33,8 @@ public class Address {
     private Integer numero;
     @Column(name = "complemento",length = 2000)
     private String complemento;
-    @OneToOne(mappedBy = "address",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private Doctor doctor;
-
-    public Address(){}
 
     public Address(AddressDTO addressDTO){
         this.logradouro = addressDTO.logradouro();
