@@ -2,6 +2,7 @@ package Enos.SpringProject.medVoll.models;
 
 import Enos.SpringProject.medVoll.exceptions.NullObjectException;
 import Enos.SpringProject.medVoll.models.dto.AddressDTO;
+import Enos.SpringProject.medVoll.models.dto.UpdateAddressDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -59,5 +60,29 @@ public class Address {
             throw new NullObjectException("the object" + this.getClass() + " is null");
         }
         this.doctor = doctor;
+    }
+
+    public void updateData(UpdateAddressDTO updateAddressDTO) {
+        if (!updateAddressDTO.logradouro().isBlank()){
+            this.logradouro = updateAddressDTO.logradouro();
+        }
+        if (!updateAddressDTO.bairro().isBlank()){
+            this.bairro = updateAddressDTO.bairro();
+        }
+        if (!updateAddressDTO.cep().isBlank()){
+            this.cep = Integer.parseInt(updateAddressDTO.cep());
+        }
+        if (!updateAddressDTO.cidade().isBlank()){
+            this.cidade = updateAddressDTO.cidade();
+        }
+        if (!updateAddressDTO.uf().isBlank()){
+            this.uf = updateAddressDTO.uf();
+        }
+        if (!updateAddressDTO.numero().isBlank()){
+            this.numero = Integer.parseInt(updateAddressDTO.numero());
+        }
+        if (!updateAddressDTO.complemento().isBlank()){
+            this.complemento = updateAddressDTO.complemento();
+        }
     }
 }

@@ -8,14 +8,16 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class DoctorListingDataDTO {
+public class ListingDoctorDTO {
 
+    private Long id;
     private String nome;
     private String email;
     private String crm;
     private List<String> especialidade;
 
-    public DoctorListingDataDTO(Doctor doctor){
+    public ListingDoctorDTO(Doctor doctor){
+        this.id = doctor.getId();
         this.nome = doctor.getName();
         this.email = doctor.getEmail();
         this.crm = doctor.getCrm();

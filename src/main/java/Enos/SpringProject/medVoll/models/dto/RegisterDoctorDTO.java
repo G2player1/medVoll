@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Pattern;
 
 import java.util.List;
 
-public record DoctorDTO(
+public record RegisterDoctorDTO(
         @NotBlank
         String nome,
         @NotBlank
