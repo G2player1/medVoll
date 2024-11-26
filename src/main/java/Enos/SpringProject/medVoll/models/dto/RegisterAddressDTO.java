@@ -3,7 +3,7 @@ package Enos.SpringProject.medVoll.models.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public record AddressDTO(
+public record RegisterAddressDTO(
         @NotBlank
         String logradouro,
         @NotBlank

@@ -5,11 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
-public class ExpertiseDTO {
+public class RegisterExpertiseDTO {
 
     private final ExpertiseEnum expertiseEnum;
 
-    public ExpertiseDTO(@NotBlank String especialidade){
+    public RegisterExpertiseDTO(@NotBlank String especialidade){
         this.expertiseEnum = ExpertiseEnum.fromString(especialidade);
     }
 

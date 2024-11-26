@@ -1,7 +1,7 @@
 package Enos.SpringProject.medVoll.models;
 
 import Enos.SpringProject.medVoll.exceptions.NullObjectException;
-import Enos.SpringProject.medVoll.models.dto.AddressDTO;
+import Enos.SpringProject.medVoll.models.dto.RegisterAddressDTO;
 import Enos.SpringProject.medVoll.models.dto.UpdateAddressDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -39,20 +39,20 @@ public class Address {
     @JsonBackReference
     private Doctor doctor;
 
-    public Address(AddressDTO addressDTO){
-        this.logradouro = addressDTO.logradouro();
-        this.bairro = addressDTO.bairro();
-        this.cidade = addressDTO.cidade();
-        this.uf = addressDTO.uf();
+    public Address(RegisterAddressDTO registerAddressDTO){
+        this.logradouro = registerAddressDTO.logradouro();
+        this.bairro = registerAddressDTO.bairro();
+        this.cidade = registerAddressDTO.cidade();
+        this.uf = registerAddressDTO.uf();
         try {
-            this.cep = Integer.parseInt(addressDTO.cep());
-            this.numero = Integer.parseInt(addressDTO.numero());
+            this.cep = Integer.parseInt(registerAddressDTO.cep());
+            this.numero = Integer.parseInt(registerAddressDTO.numero());
         } catch (NumberFormatException e){
             this.cep = null;
             this.numero = null;
             System.out.println(e.getMessage());
         }
-        this.complemento = addressDTO.complemento();
+        this.complemento = registerAddressDTO.complemento();
     }
 
     public void setDoctor(Doctor doctor){
@@ -63,25 +63,25 @@ public class Address {
     }
 
     public void updateData(UpdateAddressDTO updateAddressDTO) {
-        if (!updateAddressDTO.logradouro().isBlank()){
+        if (updateAddressDTO.logradouro() != null){
             this.logradouro = updateAddressDTO.logradouro();
         }
-        if (!updateAddressDTO.bairro().isBlank()){
+        if (updateAddressDTO.bairro() != null){
             this.bairro = updateAddressDTO.bairro();
         }
-        if (!updateAddressDTO.cep().isBlank()){
+        if (updateAddressDTO.cep() != null){
             this.cep = Integer.parseInt(updateAddressDTO.cep());
         }
-        if (!updateAddressDTO.cidade().isBlank()){
+        if (updateAddressDTO.cidade() != null){
             this.cidade = updateAddressDTO.cidade();
         }
-        if (!updateAddressDTO.uf().isBlank()){
+        if (updateAddressDTO.uf() != null){
             this.uf = updateAddressDTO.uf();
         }
-        if (!updateAddressDTO.numero().isBlank()){
+        if (updateAddressDTO.numero() != null){
             this.numero = Integer.parseInt(updateAddressDTO.numero());
         }
-        if (!updateAddressDTO.complemento().isBlank()){
+        if (updateAddressDTO.complemento() != null){
             this.complemento = updateAddressDTO.complemento();
         }
     }

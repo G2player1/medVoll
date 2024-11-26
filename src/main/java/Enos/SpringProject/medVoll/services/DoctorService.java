@@ -4,10 +4,9 @@ import Enos.SpringProject.medVoll.enums.ExpertiseEnum;
 import Enos.SpringProject.medVoll.models.Address;
 import Enos.SpringProject.medVoll.models.Doctor;
 import Enos.SpringProject.medVoll.models.Expertise;
-import Enos.SpringProject.medVoll.models.associations.DoctorExpertiseAssociation;
+import Enos.SpringProject.medVoll.models.dto.ReadDoctorDTO;
 import Enos.SpringProject.medVoll.models.dto.RegisterDoctorDTO;
-import Enos.SpringProject.medVoll.models.dto.ListingDoctorDTO;
-import Enos.SpringProject.medVoll.models.dto.ExpertiseDTO;
+import Enos.SpringProject.medVoll.models.dto.RegisterExpertiseDTO;
 import Enos.SpringProject.medVoll.models.dto.UpdateDoctorDTO;
 import Enos.SpringProject.medVoll.repositorys.IDoctorRepository;
 import jakarta.transaction.Transactional;
@@ -28,22 +27,21 @@ public class DoctorService {
         Address address = new Address(registerDoctorDTO.endereco());
         address.setDoctor(doctor);
         doctor.setAddress(address);
-        for (ExpertiseDTO expertiseDTO : registerDoctorDTO.especialidades()){
-            Expertise expertise = new Expertise(expertiseDTO);
-            DoctorExpertiseAssociation doctorExpertise = new DoctorExpertiseAssociation(doctor,expertise);
-            expertise.add(doctorExpertise);
-            doctor.addExpertises(doctorExpertise);
+        for (RegisterExpertiseDTO registerExpertiseDTO : registerDoctorDTO.especialidades()){
+            Expertise expertise = new Expertise(registerExpertiseDTO);
+            expertise.setDoctor(doctor);
+            doctor.addExpertises(expertise);
         }
         doctorRepository.save(doctor);
     }
 
     @Transactional
-    public Page<ListingDoctorDTO> getDoctorsInDB(Pageable pageable){
-        return doctorRepository.findAll(pageable).map(ListingDoctorDTO::new);
+    public Page<ReadDoctorDTO> getDoctorsInDB(Pageable pageable){
+        return doctorRepository.findAll(pageable).map(Enos.SpringProject.medVoll.models.dto.ReadDoctorDTO::new);
     }
 
     @Transactional
-    public Page<ListingDoctorDTO> getDoctorsInDbByExpertise(Pageable pageable, String expertise) {
+    public Page<ReadDoctorDTO> getDoctorsInDbByExpertise(Pageable pageable, String expertise) {
         return doctorRepository.findDoctorsByExpertise(pageable,ExpertiseEnum.fromString(expertise));
     }
 

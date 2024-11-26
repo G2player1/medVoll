@@ -1,7 +1,6 @@
 package Enos.SpringProject.medVoll.models;
 
 import Enos.SpringProject.medVoll.exceptions.NullObjectException;
-import Enos.SpringProject.medVoll.models.associations.DoctorExpertiseAssociation;
 import Enos.SpringProject.medVoll.models.dto.RegisterDoctorDTO;
 import Enos.SpringProject.medVoll.models.dto.UpdateDoctorDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -35,7 +34,7 @@ public class Doctor {
     private String crm;
     @OneToMany(mappedBy = "doctor",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<DoctorExpertiseAssociation> expertises;
+    private List<Expertise> expertises;
     @OneToOne(mappedBy = "doctor",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonManagedReference
     private Address address;
@@ -48,7 +47,7 @@ public class Doctor {
         this.crm = registerDoctorDTO.crm();
     }
 
-    public void addExpertises(DoctorExpertiseAssociation expertise){
+    public void addExpertises(Expertise expertise){
         if(expertise == null){
             throw new NullObjectException("the object" + this.getClass() + " is null");
         }
@@ -63,27 +62,28 @@ public class Doctor {
     }
 
     public void updateData(UpdateDoctorDTO updateDoctorDTO) {
-        if (!updateDoctorDTO.nome().isBlank()){
-            this.name = updateDoctorDTO.nome();
+        if (updateDoctorDTO.nome() != null){
+            if(!(updateDoctorDTO.nome().isEmpty() && updateDoctorDTO.nome().isBlank())){
+                this.name = updateDoctorDTO.nome();
+            }
         }
-        if (!updateDoctorDTO.email().isBlank()){
-            this.email = updateDoctorDTO.email();
+        if (updateDoctorDTO.email() != null){
+            if(!(updateDoctorDTO.email().isEmpty() && updateDoctorDTO.email().isBlank())) {
+                this.email = updateDoctorDTO.email();
+            }
         }
-        if (!updateDoctorDTO.telefone().isBlank()){
-            this.telefone = updateDoctorDTO.telefone();
+        if (updateDoctorDTO.telefone() != null){
+            if(!(updateDoctorDTO.telefone().isEmpty() && updateDoctorDTO.telefone().isBlank())) {
+                this.telefone = updateDoctorDTO.telefone();
+            }
         }
-        if (!updateDoctorDTO.crm().isBlank()){
-            this.crm = updateDoctorDTO.crm();
+        if (updateDoctorDTO.crm() != null){
+            if(!(updateDoctorDTO.crm().isEmpty() && updateDoctorDTO.crm().isBlank())){
+                this.crm = updateDoctorDTO.crm();
+            }
         }
         if (updateDoctorDTO.endereco() != null){
             this.address.updateData(updateDoctorDTO.endereco());
-        }
-        if (updateDoctorDTO.especialidades() != null){
-            this.expertises = updateDoctorDTO.especialidades()
-                    .stream()
-                    .map(expertiseDTO -> new DoctorExpertiseAssociation(this,new Expertise(expertiseDTO)))
-                    .toList();
-            this.expertises.forEach(doctorExpertise -> doctorExpertise.getExpertise().add(doctorExpertise));
         }
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class ListingDoctorDTO {
+public class ReadDoctorDTO {
 
     private Long id;
     private String nome;
@@ -16,14 +16,13 @@ public class ListingDoctorDTO {
     private String crm;
     private List<String> especialidade;
 
-    public ListingDoctorDTO(Doctor doctor){
+    public ReadDoctorDTO(Doctor doctor){
         this.id = doctor.getId();
         this.nome = doctor.getName();
         this.email = doctor.getEmail();
         this.crm = doctor.getCrm();
         especialidade = doctor.getExpertises().stream()
                 .map(doctorExpertise -> doctorExpertise
-                        .getExpertise()
                         .getExpertise()
                         .toPortuguese())
                 .toList();

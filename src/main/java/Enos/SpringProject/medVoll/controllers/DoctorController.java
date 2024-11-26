@@ -1,7 +1,7 @@
 package Enos.SpringProject.medVoll.controllers;
 
+import Enos.SpringProject.medVoll.models.dto.ReadDoctorDTO;
 import Enos.SpringProject.medVoll.models.dto.RegisterDoctorDTO;
-import Enos.SpringProject.medVoll.models.dto.ListingDoctorDTO;
 import Enos.SpringProject.medVoll.models.dto.UpdateDoctorDTO;
 import Enos.SpringProject.medVoll.services.DoctorService;
 import jakarta.validation.Valid;
@@ -24,13 +24,13 @@ public class DoctorController {
     }
 
     @GetMapping("/list")
-    public Page<ListingDoctorDTO> getDoctorsInDB(@PageableDefault(size = 10,sort = {"name"}) Pageable pageable){
+    public Page<ReadDoctorDTO> getDoctorsInDB(@PageableDefault(size = 10,sort = {"name"}) Pageable pageable){
         return doctorService.getDoctorsInDB(pageable);
     }
 
     @GetMapping("/list/{expertise}")
-    public Page<ListingDoctorDTO> getDoctorsInDB(@PageableDefault(size = 10,sort = {"name"}) Pageable pageable,
-                                                 @PathVariable("expertise") String expertise){
+    public Page<ReadDoctorDTO> getDoctorsInDB(@PageableDefault(size = 10,sort = {"name"}) Pageable pageable,
+                                              @PathVariable("expertise") String expertise){
         return doctorService.getDoctorsInDbByExpertise(pageable,expertise);
     }
 

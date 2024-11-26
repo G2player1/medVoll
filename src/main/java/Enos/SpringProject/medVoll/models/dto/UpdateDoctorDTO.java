@@ -11,6 +11,6 @@ public record UpdateDoctorDTO(
         String email,
         String telefone,
         String crm,
-        List<ExpertiseDTO> especialidades,
+        List<RegisterExpertiseDTO> especialidades,
         UpdateAddressDTO endereco) {
 }

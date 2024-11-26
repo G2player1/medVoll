@@ -21,9 +21,9 @@ public record RegisterDoctorDTO(
         String crm,
         @NotNull
         @Valid
-        List<ExpertiseDTO> especialidades,
+        List<RegisterExpertiseDTO> especialidades,
         @NotNull
         @Valid
-        AddressDTO endereco
+        RegisterAddressDTO endereco
 ) {
 }
