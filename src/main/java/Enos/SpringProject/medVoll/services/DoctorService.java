@@ -4,10 +4,10 @@ import Enos.SpringProject.medVoll.enums.ExpertiseEnum;
 import Enos.SpringProject.medVoll.models.Address;
 import Enos.SpringProject.medVoll.models.Doctor;
 import Enos.SpringProject.medVoll.models.Expertise;
-import Enos.SpringProject.medVoll.models.dto.ReadDoctorDTO;
-import Enos.SpringProject.medVoll.models.dto.RegisterDoctorDTO;
-import Enos.SpringProject.medVoll.models.dto.RegisterExpertiseDTO;
-import Enos.SpringProject.medVoll.models.dto.UpdateDoctorDTO;
+import Enos.SpringProject.medVoll.models.dto.reads.ReadDoctorDTO;
+import Enos.SpringProject.medVoll.models.dto.registers.RegisterDoctorDTO;
+import Enos.SpringProject.medVoll.models.dto.registers.RegisterExpertiseDTO;
+import Enos.SpringProject.medVoll.models.dto.updates.UpdateDoctorDTO;
 import Enos.SpringProject.medVoll.repositorys.IDoctorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class DoctorService {
 
     @Transactional
     public Page<ReadDoctorDTO> getDoctorsInDB(Pageable pageable){
-        return doctorRepository.findAll(pageable).map(Enos.SpringProject.medVoll.models.dto.ReadDoctorDTO::new);
+        return doctorRepository.findAll(pageable).map(ReadDoctorDTO::new);
     }
 
     @Transactional

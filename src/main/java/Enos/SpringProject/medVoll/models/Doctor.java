@@ -1,8 +1,8 @@
 package Enos.SpringProject.medVoll.models;
 
 import Enos.SpringProject.medVoll.exceptions.NullObjectException;
-import Enos.SpringProject.medVoll.models.dto.RegisterDoctorDTO;
-import Enos.SpringProject.medVoll.models.dto.UpdateDoctorDTO;
+import Enos.SpringProject.medVoll.models.dto.registers.RegisterDoctorDTO;
+import Enos.SpringProject.medVoll.models.dto.updates.UpdateDoctorDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -84,6 +84,12 @@ public class Doctor {
         }
         if (updateDoctorDTO.endereco() != null){
             this.address.updateData(updateDoctorDTO.endereco());
+        }
+        if (updateDoctorDTO.especialidades() != null){
+            this.expertises = updateDoctorDTO.especialidades()
+                    .stream()
+                    .map(registerExpertiseDTO -> new Expertise(this,registerExpertiseDTO))
+                    .toList();
         }
     }
 }

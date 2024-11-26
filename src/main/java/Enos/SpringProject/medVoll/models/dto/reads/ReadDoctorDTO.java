@@ -1,4 +1,4 @@
-package Enos.SpringProject.medVoll.models.dto;
+package Enos.SpringProject.medVoll.models.dto.reads;
 
 import Enos.SpringProject.medVoll.models.Doctor;
 import lombok.Getter;

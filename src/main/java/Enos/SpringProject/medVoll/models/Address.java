@@ -1,8 +1,8 @@
 package Enos.SpringProject.medVoll.models;
 
 import Enos.SpringProject.medVoll.exceptions.NullObjectException;
-import Enos.SpringProject.medVoll.models.dto.RegisterAddressDTO;
-import Enos.SpringProject.medVoll.models.dto.UpdateAddressDTO;
+import Enos.SpringProject.medVoll.models.dto.registers.RegisterAddressDTO;
+import Enos.SpringProject.medVoll.models.dto.updates.UpdateAddressDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

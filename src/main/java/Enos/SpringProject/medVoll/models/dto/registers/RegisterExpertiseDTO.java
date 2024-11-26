@@ -1,4 +1,4 @@
-package Enos.SpringProject.medVoll.models.dto;
+package Enos.SpringProject.medVoll.models.dto.registers;
 
 import Enos.SpringProject.medVoll.enums.ExpertiseEnum;
 import jakarta.validation.constraints.NotBlank;

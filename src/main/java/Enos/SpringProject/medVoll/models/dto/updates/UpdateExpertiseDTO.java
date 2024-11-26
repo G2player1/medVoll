@@ -1,4 +1,4 @@
-package Enos.SpringProject.medVoll.models.dto;
+package Enos.SpringProject.medVoll.models.dto.updates;
 
 import Enos.SpringProject.medVoll.enums.ExpertiseEnum;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package Enos.SpringProject.medVoll.models.dto;
+package Enos.SpringProject.medVoll.models.dto.registers;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

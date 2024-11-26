@@ -2,7 +2,7 @@ package Enos.SpringProject.medVoll.repositorys;
 
 import Enos.SpringProject.medVoll.enums.ExpertiseEnum;
 import Enos.SpringProject.medVoll.models.Doctor;
-import Enos.SpringProject.medVoll.models.dto.ReadDoctorDTO;
+import Enos.SpringProject.medVoll.models.dto.reads.ReadDoctorDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

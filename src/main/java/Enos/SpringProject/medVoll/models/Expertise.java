@@ -2,7 +2,7 @@ package Enos.SpringProject.medVoll.models;
 
 import Enos.SpringProject.medVoll.enums.ExpertiseEnum;
 import Enos.SpringProject.medVoll.exceptions.NullObjectException;
-import Enos.SpringProject.medVoll.models.dto.RegisterExpertiseDTO;
+import Enos.SpringProject.medVoll.models.dto.registers.RegisterExpertiseDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,6 +31,12 @@ public class Expertise {
     public Expertise(RegisterExpertiseDTO registerExpertiseDTO){
         this.expertise = registerExpertiseDTO.getExpertiseEnum();
     }
+
+    public Expertise(Doctor doctor,RegisterExpertiseDTO registerExpertiseDTO){
+        this.expertise = registerExpertiseDTO.getExpertiseEnum();
+        this.doctor = doctor;
+    }
+
 
     public void setDoctor(Doctor doctor){
         if(doctor == null){

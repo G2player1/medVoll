@@ -1,8 +1,8 @@
 package Enos.SpringProject.medVoll.controllers;
 
-import Enos.SpringProject.medVoll.models.dto.ReadDoctorDTO;
-import Enos.SpringProject.medVoll.models.dto.RegisterDoctorDTO;
-import Enos.SpringProject.medVoll.models.dto.UpdateDoctorDTO;
+import Enos.SpringProject.medVoll.models.dto.reads.ReadDoctorDTO;
+import Enos.SpringProject.medVoll.models.dto.registers.RegisterDoctorDTO;
+import Enos.SpringProject.medVoll.models.dto.updates.UpdateDoctorDTO;
 import Enos.SpringProject.medVoll.services.DoctorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
