@@ -21,7 +21,7 @@ public class ReadDoctorDTO {
         this.nome = doctor.getName();
         this.email = doctor.getEmail();
         this.crm = doctor.getCrm();
-        especialidade = doctor.getExpertises().stream()
+        this.especialidade = doctor.getExpertises().stream()
                 .map(doctorExpertise -> doctorExpertise
                         .getExpertise()
                         .toPortuguese())

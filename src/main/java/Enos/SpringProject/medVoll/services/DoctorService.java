@@ -1,6 +1,7 @@
 package Enos.SpringProject.medVoll.services;
 
 import Enos.SpringProject.medVoll.enums.ExpertiseEnum;
+import Enos.SpringProject.medVoll.exceptions.CantGetEnumException;
 import Enos.SpringProject.medVoll.models.Address;
 import Enos.SpringProject.medVoll.models.Doctor;
 import Enos.SpringProject.medVoll.models.Expertise;
@@ -12,8 +13,11 @@ import Enos.SpringProject.medVoll.repositorys.IDoctorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DoctorService {
@@ -42,7 +46,17 @@ public class DoctorService {
 
     @Transactional
     public Page<ReadDoctorDTO> getDoctorsInDbByExpertise(Pageable pageable, String expertise) {
-        return doctorRepository.findDoctorsByExpertise(pageable,ExpertiseEnum.fromString(expertise));
+        List<ReadDoctorDTO> doctorList;
+        try {
+            doctorList = doctorRepository.findByExpertises_Expertise(pageable,ExpertiseEnum.fromString(expertise))
+                    .stream()
+                    .map(ReadDoctorDTO::new)
+                    .toList();
+            return new PageImpl<>(doctorList);
+        } catch (CantGetEnumException e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     @Transactional
