@@ -10,6 +10,7 @@ import Enos.SpringProject.medVoll.models.dto.registers.RegisterDoctorDTO;
 import Enos.SpringProject.medVoll.models.dto.registers.RegisterExpertiseDTO;
 import Enos.SpringProject.medVoll.models.dto.updates.UpdateDoctorDTO;
 import Enos.SpringProject.medVoll.repositorys.IDoctorRepository;
+import Enos.SpringProject.medVoll.repositorys.IExpertiseRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,8 @@ public class DoctorService {
 
     @Autowired
     private IDoctorRepository doctorRepository;
+    @Autowired
+    private IExpertiseRepository expertiseRepository;
 
     @Transactional
     public void registerDoctorInDB(RegisterDoctorDTO registerDoctorDTO){
@@ -41,14 +44,25 @@ public class DoctorService {
 
     @Transactional
     public Page<ReadDoctorDTO> getDoctorsInDB(Pageable pageable){
-        return doctorRepository.findAll(pageable).map(ReadDoctorDTO::new);
+        List<ReadDoctorDTO> doctorList;
+        List<Doctor> aux;
+        aux = doctorRepository.findByActive(pageable,1);
+        aux.forEach(doctor -> doctor.getExpertises().removeIf(expertise -> !expertise.isActive()));
+        doctorList = aux
+                .stream()
+                .map(ReadDoctorDTO::new)
+                .toList();
+        return new PageImpl<>(doctorList);
     }
 
     @Transactional
     public Page<ReadDoctorDTO> getDoctorsInDbByExpertise(Pageable pageable, String expertise) {
         List<ReadDoctorDTO> doctorList;
+        List<Doctor> aux;
         try {
-            doctorList = doctorRepository.findByExpertises_Expertise(pageable,ExpertiseEnum.fromString(expertise))
+            aux = doctorRepository.findByExpertises_ExpertiseAndActive(pageable,ExpertiseEnum.fromString(expertise),1);
+            aux.forEach(doctor -> doctor.getExpertises().removeIf(expertise1 -> !expertise1.isActive()));
+            doctorList = aux
                     .stream()
                     .map(ReadDoctorDTO::new)
                     .toList();
@@ -61,7 +75,13 @@ public class DoctorService {
 
     @Transactional
     public void updateDoctor(UpdateDoctorDTO updateDoctorDTO) {
-        var doctor = doctorRepository.getReferenceById(updateDoctorDTO.id());
+        var doctor = doctorRepository.getReferenceByIdAndActive(updateDoctorDTO.id(),1);
         doctor.updateData(updateDoctorDTO);
+    }
+
+    @Transactional
+    public void deleteDoctorById(Long id) {
+        var doctor = doctorRepository.getReferenceByIdAndActive(id,1);
+        doctor.doctorDeleteLogical();
     }
 }

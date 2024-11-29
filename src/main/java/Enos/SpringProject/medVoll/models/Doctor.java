@@ -38,6 +38,8 @@ public class Doctor {
     @OneToOne(mappedBy = "doctor",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonManagedReference
     private Address address;
+    @Column(name = "active",nullable = false)
+    private Integer active;
 
     public Doctor(RegisterDoctorDTO registerDoctorDTO){
         expertises = new ArrayList<>();
@@ -45,6 +47,7 @@ public class Doctor {
         this.email = registerDoctorDTO.email();
         this.telefone = registerDoctorDTO.telefone();
         this.crm = registerDoctorDTO.crm();
+        this.active = 1;
     }
 
     public void addExpertises(Expertise expertise){
@@ -59,6 +62,10 @@ public class Doctor {
             throw new NullObjectException("the object" + this.getClass() + " is null");
         }
         this.address = address;
+    }
+
+    public void doctorDeleteLogical(){
+        this.active = 0;
     }
 
     public void updateData(UpdateDoctorDTO updateDoctorDTO) {
@@ -86,10 +93,12 @@ public class Doctor {
             this.address.updateData(updateDoctorDTO.endereco());
         }
         if (updateDoctorDTO.especialidades() != null){
-            this.expertises = updateDoctorDTO.especialidades()
+            List<Expertise> aux = updateDoctorDTO.especialidades()
                     .stream()
                     .map(registerExpertiseDTO -> new Expertise(this,registerExpertiseDTO))
                     .toList();
+            this.expertises.forEach(Expertise::expertiseDeleteLogical);
+            this.expertises = aux;
         }
     }
 }

@@ -38,6 +38,9 @@ public class Address {
     @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonBackReference
     private Doctor doctor;
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JsonBackReference
+    private Patient patient;
 
     public Address(RegisterAddressDTO registerAddressDTO){
         this.logradouro = registerAddressDTO.logradouro();
@@ -57,9 +60,16 @@ public class Address {
 
     public void setDoctor(Doctor doctor){
         if(doctor == null){
-            throw new NullObjectException("the object" + this.getClass() + " is null");
+            throw new NullObjectException("the object" + Doctor.class + " is null");
         }
         this.doctor = doctor;
+    }
+
+    public void setPatient(Patient patient){
+        if(patient == null){
+            throw new NullObjectException("the object" + Patient.class + " is null");
+        }
+        this.patient = patient;
     }
 
     public void updateData(UpdateAddressDTO updateAddressDTO) {

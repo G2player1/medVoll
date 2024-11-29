@@ -38,4 +38,9 @@ public class DoctorController {
     public void updateDoctor(@RequestBody UpdateDoctorDTO updateDoctorDTO){
         doctorService.updateDoctor(updateDoctorDTO);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteDoctor(@PathVariable("id") Long id){
+        doctorService.deleteDoctorById(id);
+    }
 }

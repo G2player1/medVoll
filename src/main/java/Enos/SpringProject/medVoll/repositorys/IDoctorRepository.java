@@ -11,5 +11,7 @@ import java.util.List;
 @Repository
 public interface IDoctorRepository extends JpaRepository<Doctor,Long> {
 
-    List<Doctor> findByExpertises_Expertise(Pageable pageable, ExpertiseEnum expertise);
+    List<Doctor> findByActive(Pageable pageable,Integer active);
+    List<Doctor> findByExpertises_ExpertiseAndActive(Pageable pageable, ExpertiseEnum expertise, Integer doctorActive);
+    Doctor getReferenceByIdAndActive(Long id,Integer active);
 }

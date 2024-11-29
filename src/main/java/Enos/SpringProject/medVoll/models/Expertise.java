@@ -1,14 +1,10 @@
 package Enos.SpringProject.medVoll.models;
 
 import Enos.SpringProject.medVoll.enums.ExpertiseEnum;
-import Enos.SpringProject.medVoll.exceptions.NullObjectException;
 import Enos.SpringProject.medVoll.models.dto.registers.RegisterExpertiseDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "expertises")
@@ -24,24 +20,30 @@ public class Expertise {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "expertise",nullable = false)
     private ExpertiseEnum expertise;
+    @Setter
     @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonBackReference
     private Doctor doctor;
+    @Column(name = "active",nullable = false)
+    private Integer active;
+
 
     public Expertise(RegisterExpertiseDTO registerExpertiseDTO){
         this.expertise = registerExpertiseDTO.getExpertiseEnum();
+        this.active = 1;
     }
 
     public Expertise(Doctor doctor,RegisterExpertiseDTO registerExpertiseDTO){
         this.expertise = registerExpertiseDTO.getExpertiseEnum();
         this.doctor = doctor;
+        this.active = 1;
     }
 
+    public boolean isActive(){
+        return active == 1;
+    }
 
-    public void setDoctor(Doctor doctor){
-        if(doctor == null){
-            throw new NullObjectException("the object" + this.getClass() + " is null");
-        }
-        this.doctor = doctor;
+    public void expertiseDeleteLogical() {
+        this.active = 0;
     }
 }
