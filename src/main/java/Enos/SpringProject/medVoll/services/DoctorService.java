@@ -43,10 +43,10 @@ public class DoctorService {
     }
 
     @Transactional
-    public Page<ReadDoctorDTO> getDoctorsInDB(Pageable pageable){
+    public Page<ReadDoctorDTO> getDoctorsInDB(){
         List<ReadDoctorDTO> doctorList;
         List<Doctor> aux;
-        aux = doctorRepository.findByActive(pageable,1);
+        aux = doctorRepository.findByActive(1);
         aux.forEach(doctor -> doctor.getExpertises().removeIf(expertise -> !expertise.isActive()));
         doctorList = aux
                 .stream()
@@ -56,11 +56,11 @@ public class DoctorService {
     }
 
     @Transactional
-    public Page<ReadDoctorDTO> getDoctorsInDbByExpertise(Pageable pageable, String expertise) {
+    public Page<ReadDoctorDTO> getDoctorsInDbByExpertise(String expertise) {
         List<ReadDoctorDTO> doctorList;
         List<Doctor> aux;
         try {
-            aux = doctorRepository.findByExpertises_ExpertiseAndActive(pageable,ExpertiseEnum.fromString(expertise),1);
+            aux = doctorRepository.findByExpertises_ExpertiseAndActive(ExpertiseEnum.fromString(expertise),1);
             aux.forEach(doctor -> doctor.getExpertises().removeIf(expertise1 -> !expertise1.isActive()));
             doctorList = aux
                     .stream()

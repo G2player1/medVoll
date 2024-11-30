@@ -10,6 +10,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "patients")
 @Getter
@@ -32,15 +35,26 @@ public class Patient {
     @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonManagedReference
     private Address address;
+    @OneToMany(mappedBy = "patient",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Consult> consults;
     @Column(name = "active")
     private Integer active;
 
     public Patient(RegisterPatientDTO registerPatientDTO){
+        this.consults = new ArrayList<>();
         this.cpf = registerPatientDTO.cpf();
         this.name = registerPatientDTO.nome();
         this.email = registerPatientDTO.email();
         this.telefone = registerPatientDTO.telefone();
         this.active = 1;
+    }
+
+    public void addConsult(Consult consult){
+        if(consult == null){
+            throw new NullObjectException("the object" + Consult.class + " is null");
+        }
+        this.consults.add(consult);
     }
 
     public void setAddress(Address address){

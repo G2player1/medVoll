@@ -25,13 +25,13 @@ public class DoctorController {
 
     @GetMapping("/list")
     public Page<ReadDoctorDTO> getDoctorsInDB(@PageableDefault(size = 10,sort = {"name"}) Pageable pageable){
-        return doctorService.getDoctorsInDB(pageable);
+        return doctorService.getDoctorsInDB();
     }
 
     @GetMapping("/list/{expertise}")
-    public Page<ReadDoctorDTO> getDoctorsInDB(@PageableDefault(size = 10,sort = {"name"}) Pageable pageable,
-                                              @PathVariable("expertise") String expertise){
-        return doctorService.getDoctorsInDbByExpertise(pageable,expertise);
+    public Page<ReadDoctorDTO> getDoctorsInDB(@PageableDefault(size = 10,sort = {"name"})
+                                                  @PathVariable("expertise") String expertise){
+        return doctorService.getDoctorsInDbByExpertise(expertise);
     }
 
     @PutMapping("/edit")

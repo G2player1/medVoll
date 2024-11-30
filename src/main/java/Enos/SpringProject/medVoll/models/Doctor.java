@@ -32,17 +32,21 @@ public class Doctor {
     private String telefone;
     @Column(name = "crm")
     private String crm;
-    @OneToMany(mappedBy = "doctor",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Expertise> expertises;
     @OneToOne(mappedBy = "doctor",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonManagedReference
     private Address address;
+    @OneToMany(mappedBy = "doctor",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Expertise> expertises;
+    @OneToMany(mappedBy = "doctor",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Consult> consults;
     @Column(name = "active",nullable = false)
     private Integer active;
 
     public Doctor(RegisterDoctorDTO registerDoctorDTO){
         expertises = new ArrayList<>();
+        consults = new ArrayList<>();
         this.name = registerDoctorDTO.nome();
         this.email = registerDoctorDTO.email();
         this.telefone = registerDoctorDTO.telefone();
@@ -52,9 +56,16 @@ public class Doctor {
 
     public void addExpertises(Expertise expertise){
         if(expertise == null){
-            throw new NullObjectException("the object" + this.getClass() + " is null");
+            throw new NullObjectException("the object" + Expertise.class + " is null");
         }
         this.expertises.add(expertise);
+    }
+
+    public void addConsult(Consult consult){
+        if(consult == null){
+            throw new NullObjectException("the object" + Consult.class + " is null");
+        }
+        this.consults.add(consult);
     }
 
     public void setAddress(Address address){

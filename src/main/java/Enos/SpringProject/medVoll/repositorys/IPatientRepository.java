@@ -10,5 +10,6 @@ import java.util.List;
 public interface IPatientRepository extends JpaRepository<Patient,Long> {
 
     Patient getReferenceByIdAndActive(Long id, Integer active);
+    Patient findByCpfAndActive(String cpf, Integer active);
     List<Patient> findByActive(Integer active);
 }

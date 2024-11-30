@@ -41,6 +41,12 @@ public class PatientService {
     }
 
     @Transactional
+    public ReadPatientDTO getPatientByCPF(String cpf) {
+        var patient = patientRepository.findByCpfAndActive(cpf,1);
+        return new ReadPatientDTO(patient);
+    }
+
+    @Transactional
     public void updatePatient(UpdatePatientDTO updatePatientDTO) {
         var patient = patientRepository.getReferenceByIdAndActive(updatePatientDTO.id(),1);
         patient.updateData(updatePatientDTO);
