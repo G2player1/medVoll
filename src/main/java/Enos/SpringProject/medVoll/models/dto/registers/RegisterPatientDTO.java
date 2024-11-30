@@ -9,6 +9,8 @@ public record RegisterPatientDTO(
         @NotBlank
         String nome,
         @NotBlank
+        String email,
+        @NotBlank
         String telefone,
         @NotBlank
         @Valid

@@ -59,7 +59,7 @@ public class Doctor {
 
     public void setAddress(Address address){
         if(address == null){
-            throw new NullObjectException("the object" + this.getClass() + " is null");
+            throw new NullObjectException("the object" + Address.class + " is null");
         }
         this.address = address;
     }

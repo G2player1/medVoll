@@ -10,7 +10,7 @@ import Enos.SpringProject.medVoll.models.dto.registers.RegisterDoctorDTO;
 import Enos.SpringProject.medVoll.models.dto.registers.RegisterExpertiseDTO;
 import Enos.SpringProject.medVoll.models.dto.updates.UpdateDoctorDTO;
 import Enos.SpringProject.medVoll.repositorys.IDoctorRepository;
-import Enos.SpringProject.medVoll.repositorys.IExpertiseRepository;
+import Enos.SpringProject.medVoll.repositorys.IPatientRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,7 +26,7 @@ public class DoctorService {
     @Autowired
     private IDoctorRepository doctorRepository;
     @Autowired
-    private IExpertiseRepository expertiseRepository;
+    private IPatientRepository expertiseRepository;
 
     @Transactional
     public void registerDoctorInDB(RegisterDoctorDTO registerDoctorDTO){
