@@ -4,10 +4,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record RegisterConsultDTO(
-        Long medicoId,
+        Long medico_id,
         String especialidade,
         @NotNull
-        Long pacienteId,
+        Long paciente_id,
         @NotBlank
         @NotNull
         String horario

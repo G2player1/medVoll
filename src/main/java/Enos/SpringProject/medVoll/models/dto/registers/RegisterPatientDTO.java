@@ -2,6 +2,7 @@ package Enos.SpringProject.medVoll.models.dto.registers;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record RegisterPatientDTO(
         @NotBlank
@@ -12,7 +13,7 @@ public record RegisterPatientDTO(
         String email,
         @NotBlank
         String telefone,
-        @NotBlank
+        @NotNull
         @Valid
         RegisterAddressDTO endereco
 ) {

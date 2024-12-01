@@ -36,9 +36,10 @@ public class Consult {
         this.patient = patient;
         this.scheduleStart = schedule;
         this.scheduleEnd = schedule.plusHours(1);
+        this.active = 1;
     }
 
     public void consultDeleteLogical() {
-        this.active = 1;
+        this.active = 0;
     }
 }

@@ -35,10 +35,10 @@ public class ConsultService {
     public void registerConsult(RegisterConsultDTO registerConsultDTO) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/uuuu:HH:mm:ss");
         var schedule = LocalDateTime.parse(registerConsultDTO.horario(),dateTimeFormatter);
-        var patient = patientRepository.getReferenceByIdAndActive(registerConsultDTO.pacienteId(), 1);
+        var patient = patientRepository.getReferenceByIdAndActive(registerConsultDTO.paciente_id(), 1);
         Doctor doctor;
-        if(registerConsultDTO.medicoId() != null){
-            doctor = doctorRepository.getReferenceByIdAndActive(registerConsultDTO.medicoId(), 1);
+        if(registerConsultDTO.medico_id() != null){
+            doctor = doctorRepository.getReferenceByIdAndActive(registerConsultDTO.medico_id(), 1);
         } else {
             doctor = selectRandomDoctor(registerConsultDTO.especialidade(), schedule);
         }
@@ -62,10 +62,17 @@ public class ConsultService {
         }
         for (Doctor d : doctors){
             doctor = d;
+            System.out.println(doctor);
             for (Consult c : d.getConsults()){
-                if (schedule.isAfter(c.getScheduleStart()) && schedule.isBefore(c.getScheduleEnd())){
-                    doctor = null;
-                    break;
+                if (c.getActive() != 0) {
+                    System.out.println(c);
+                    System.out.println("start: " + c.getScheduleStart());
+                    System.out.println("Schedule: " + schedule);
+                    System.out.println("end: " + c.getScheduleEnd());
+                    if (!schedule.isBefore(c.getScheduleStart()) && !schedule.isAfter(c.getScheduleEnd()) || schedule.isEqual(c.getScheduleStart())){
+                        doctor = null;
+                        System.out.println(doctor);
+                    }
                 }
             }
             if(doctor != null){
@@ -80,33 +87,49 @@ public class ConsultService {
     private boolean verifyConsult(LocalDateTime schedule, Doctor doctor, Patient patient){
         var aux = LocalDateTime.now();
         if (doctor == null){
+            System.out.println("medico nulo ou ocupado");
             return false;
         }
         if (patient == null){
+            System.out.println("paciente nulo");
             return false;
         }
         if (schedule == null){
+            System.out.println("horario nulo");
             return false;
         }
         if (schedule.getDayOfWeek() == DayOfWeek.SUNDAY){
+            System.out.println("horario é domingo");
             return false;
         }
-        if (!(schedule.getHour() > 7 && schedule.getHour() < 19)){
+        if (!(schedule.getHour() >= 7 && schedule.getHour() <= 19)){
+            System.out.println("não esta aberto");
             return false;
         }
-        if(ChronoUnit.MINUTES.between(schedule,aux) < 30){
+        if(ChronoUnit.MINUTES.between(aux,schedule) < 30){
+            System.out.println("muito cedo");
+            return false;
+        }
+        if (schedule.isBefore(aux)){
+            System.out.println("a data é invalida");
             return false;
         }
         for (Consult c : patient.getConsults()){
-            if((c.getScheduleStart().getDayOfMonth() == schedule.getDayOfMonth())
-                    && (c.getScheduleStart().getMonth() == schedule.getMonth())
-                    && (c.getScheduleStart().getYear() == schedule.getYear())){
-                return false;
+            if (c.getActive() != 0){
+                if((c.getScheduleStart().getDayOfMonth() == schedule.getDayOfMonth())
+                        && (c.getScheduleStart().getMonth() == schedule.getMonth())
+                        && (c.getScheduleStart().getYear() == schedule.getYear())){
+                    System.out.println("paciente tem outra consulta");
+                    return false;
+                }
             }
         }
         for (Consult c : doctor.getConsults()){
-            if (schedule.isAfter(c.getScheduleStart()) && schedule.isBefore(c.getScheduleEnd())){
-                return false;
+            if(c.getActive() != 0) {
+                if (!schedule.isBefore(c.getScheduleStart()) && !schedule.isAfter(c.getScheduleEnd()) || schedule.isEqual(c.getScheduleStart())) {
+                    System.out.println("medico ocupado nesse horario");
+                    return false;
+                }
             }
         }
         return true;
