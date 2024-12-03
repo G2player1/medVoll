@@ -6,6 +6,7 @@ import Enos.SpringProject.medVoll.models.Address;
 import Enos.SpringProject.medVoll.models.Doctor;
 import Enos.SpringProject.medVoll.models.Expertise;
 import Enos.SpringProject.medVoll.models.dto.reads.ReadDoctorDTO;
+import Enos.SpringProject.medVoll.models.dto.reads.ReadUpdatedDoctorDTO;
 import Enos.SpringProject.medVoll.models.dto.registers.RegisterDoctorDTO;
 import Enos.SpringProject.medVoll.models.dto.registers.RegisterExpertiseDTO;
 import Enos.SpringProject.medVoll.models.dto.updates.UpdateDoctorDTO;
@@ -15,7 +16,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class DoctorService {
     private IPatientRepository expertiseRepository;
 
     @Transactional
-    public void registerDoctorInDB(RegisterDoctorDTO registerDoctorDTO){
+    public ReadDoctorDTO registerDoctorInDB(RegisterDoctorDTO registerDoctorDTO){
         Doctor doctor = new Doctor(registerDoctorDTO);
         Address address = new Address(registerDoctorDTO.endereco());
         address.setDoctor(doctor);
@@ -40,6 +40,7 @@ public class DoctorService {
             doctor.addExpertises(expertise);
         }
         doctorRepository.save(doctor);
+        return new ReadDoctorDTO(doctor);
     }
 
     @Transactional
@@ -74,9 +75,10 @@ public class DoctorService {
     }
 
     @Transactional
-    public void updateDoctor(UpdateDoctorDTO updateDoctorDTO) {
+    public ReadUpdatedDoctorDTO updateDoctor(UpdateDoctorDTO updateDoctorDTO) {
         var doctor = doctorRepository.getReferenceByIdAndActive(updateDoctorDTO.id(),1);
         doctor.updateData(updateDoctorDTO);
+        return new ReadUpdatedDoctorDTO(doctor);
     }
 
     @Transactional

@@ -32,7 +32,7 @@ public class ConsultService {
     private IPatientRepository patientRepository;
 
     @Transactional
-    public void registerConsult(RegisterConsultDTO registerConsultDTO) {
+    public ReadConsultDTO registerConsult(RegisterConsultDTO registerConsultDTO) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/uuuu:HH:mm:ss");
         var schedule = LocalDateTime.parse(registerConsultDTO.horario(),dateTimeFormatter);
         var patient = patientRepository.getReferenceByIdAndActive(registerConsultDTO.paciente_id(), 1);
@@ -43,12 +43,13 @@ public class ConsultService {
             doctor = selectRandomDoctor(registerConsultDTO.especialidade(), schedule);
         }
         if (!verifyConsult(schedule,doctor,patient)){
-            return;
+            return null;
         }
         Consult consult = new Consult(doctor,patient,schedule);
         doctor.addConsult(consult);
         patient.addConsult(consult);
         consultRepository.save(consult);
+        return new ReadConsultDTO(consult);
     }
 
     @Transactional

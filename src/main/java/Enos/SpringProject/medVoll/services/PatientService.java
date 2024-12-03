@@ -3,6 +3,7 @@ package Enos.SpringProject.medVoll.services;
 import Enos.SpringProject.medVoll.models.Address;
 import Enos.SpringProject.medVoll.models.Patient;
 import Enos.SpringProject.medVoll.models.dto.reads.ReadPatientDTO;
+import Enos.SpringProject.medVoll.models.dto.reads.ReadUpdatedPatientDTO;
 import Enos.SpringProject.medVoll.models.dto.registers.RegisterPatientDTO;
 import Enos.SpringProject.medVoll.models.dto.updates.UpdatePatientDTO;
 import Enos.SpringProject.medVoll.repositorys.IPatientRepository;
@@ -21,12 +22,13 @@ public class PatientService {
     private IPatientRepository patientRepository;
 
     @Transactional
-    public void registerPatient(RegisterPatientDTO registerPatientDTO) {
+    public ReadPatientDTO registerPatient(RegisterPatientDTO registerPatientDTO) {
         Patient patient = new Patient(registerPatientDTO);
         Address address = new Address(registerPatientDTO.endereco());
         patient.setAddress(address);
         address.setPatient(patient);
         patientRepository.save(patient);
+        return new ReadPatientDTO(patient);
     }
 
     @Transactional
@@ -47,9 +49,10 @@ public class PatientService {
     }
 
     @Transactional
-    public void updatePatient(UpdatePatientDTO updatePatientDTO) {
+    public ReadUpdatedPatientDTO updatePatient(UpdatePatientDTO updatePatientDTO) {
         var patient = patientRepository.getReferenceByIdAndActive(updatePatientDTO.id(),1);
         patient.updateData(updatePatientDTO);
+        return new ReadUpdatedPatientDTO(patient);
     }
 
     @Transactional

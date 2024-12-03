@@ -7,8 +7,8 @@ import Enos.SpringProject.medVoll.services.DoctorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,28 +19,33 @@ public class DoctorController {
     private DoctorService doctorService;
 
     @PostMapping("/register")
-    public void registerDoctor(@RequestBody @Valid RegisterDoctorDTO registerDoctorDTO){
-        doctorService.registerDoctorInDB(registerDoctorDTO);
+    public ResponseEntity registerDoctor(@RequestBody @Valid RegisterDoctorDTO registerDoctorDTO){
+        var doctor = doctorService.registerDoctorInDB(registerDoctorDTO);
+        return ResponseEntity.ok(doctor);
     }
 
     @GetMapping("/list")
-    public Page<ReadDoctorDTO> getDoctorsInDB(@PageableDefault(size = 10,sort = {"name"}) Pageable pageable){
-        return doctorService.getDoctorsInDB();
+    public ResponseEntity<Page<ReadDoctorDTO>> getDoctorsInDB(){
+        Page<ReadDoctorDTO> page = doctorService.getDoctorsInDB();
+        return ResponseEntity.ok(page);
     }
 
     @GetMapping("/list/{expertise}")
-    public Page<ReadDoctorDTO> getDoctorsInDB(@PageableDefault(size = 10,sort = {"name"})
+    public ResponseEntity<Page<ReadDoctorDTO>> getDoctorsInDB(@PageableDefault(size = 10,sort = {"name"})
                                                   @PathVariable("expertise") String expertise){
-        return doctorService.getDoctorsInDbByExpertise(expertise);
+        Page<ReadDoctorDTO> page = doctorService.getDoctorsInDbByExpertise(expertise);
+        return ResponseEntity.ok(page);
     }
 
     @PutMapping("/edit")
-    public void updateDoctor(@RequestBody UpdateDoctorDTO updateDoctorDTO){
-        doctorService.updateDoctor(updateDoctorDTO);
+    public ResponseEntity updateDoctor(@RequestBody UpdateDoctorDTO updateDoctorDTO){
+        var doctor = doctorService.updateDoctor(updateDoctorDTO);
+        return ResponseEntity.ok(doctor);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteDoctor(@PathVariable("id") Long id){
+    public ResponseEntity deleteDoctor(@PathVariable("id") Long id){
         doctorService.deleteDoctorById(id);
+        return ResponseEntity.noContent().build();
     }
 }
