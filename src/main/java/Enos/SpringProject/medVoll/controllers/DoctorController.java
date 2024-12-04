@@ -1,15 +1,18 @@
 package Enos.SpringProject.medVoll.controllers;
 
-import Enos.SpringProject.medVoll.models.dto.reads.ReadDoctorDTO;
-import Enos.SpringProject.medVoll.models.dto.registers.RegisterDoctorDTO;
-import Enos.SpringProject.medVoll.models.dto.updates.UpdateDoctorDTO;
-import Enos.SpringProject.medVoll.services.DoctorService;
+import Enos.SpringProject.medVoll.domain.models.dto.reads.ReadDetailedDoctorDTO;
+import Enos.SpringProject.medVoll.domain.models.dto.reads.ReadDoctorDTO;
+import Enos.SpringProject.medVoll.domain.models.dto.reads.ReadUpdatedDoctorDTO;
+import Enos.SpringProject.medVoll.domain.models.dto.registers.RegisterDoctorDTO;
+import Enos.SpringProject.medVoll.domain.models.dto.updates.UpdateDoctorDTO;
+import Enos.SpringProject.medVoll.domain.services.DoctorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("doctors")
@@ -19,8 +22,16 @@ public class DoctorController {
     private DoctorService doctorService;
 
     @PostMapping("/register")
-    public ResponseEntity registerDoctor(@RequestBody @Valid RegisterDoctorDTO registerDoctorDTO){
+    public ResponseEntity<ReadDetailedDoctorDTO> registerDoctor(@RequestBody @Valid RegisterDoctorDTO registerDoctorDTO,
+                                                                UriComponentsBuilder uriBuilder){
         var doctor = doctorService.registerDoctorInDB(registerDoctorDTO);
+        var uri = uriBuilder.path("/doctors/{id}").buildAndExpand(doctor.id()).toUri();
+        return ResponseEntity.created(uri).body(doctor);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ReadDetailedDoctorDTO> getDoctorByID(@PathVariable("id") Long id){
+        var doctor = doctorService.getDoctorById(id);
         return ResponseEntity.ok(doctor);
     }
 
@@ -31,14 +42,14 @@ public class DoctorController {
     }
 
     @GetMapping("/list/{expertise}")
-    public ResponseEntity<Page<ReadDoctorDTO>> getDoctorsInDB(@PageableDefault(size = 10,sort = {"name"})
+    public ResponseEntity<Page<ReadDoctorDTO>> getDoctorsInDBByExpertise(@PageableDefault(size = 10,sort = {"name"})
                                                   @PathVariable("expertise") String expertise){
         Page<ReadDoctorDTO> page = doctorService.getDoctorsInDbByExpertise(expertise);
         return ResponseEntity.ok(page);
     }
 
     @PutMapping("/edit")
-    public ResponseEntity updateDoctor(@RequestBody UpdateDoctorDTO updateDoctorDTO){
+    public ResponseEntity<ReadUpdatedDoctorDTO> updateDoctor(@RequestBody UpdateDoctorDTO updateDoctorDTO){
         var doctor = doctorService.updateDoctor(updateDoctorDTO);
         return ResponseEntity.ok(doctor);
     }
