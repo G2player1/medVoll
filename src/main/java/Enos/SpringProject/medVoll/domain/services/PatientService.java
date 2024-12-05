@@ -1,6 +1,5 @@
 package Enos.SpringProject.medVoll.domain.services;
 
-import Enos.SpringProject.medVoll.domain.exceptions.RequestBdException;
 import Enos.SpringProject.medVoll.domain.models.Address;
 import Enos.SpringProject.medVoll.domain.models.Patient;
 import Enos.SpringProject.medVoll.domain.models.dto.reads.ReadDetailedPatientDTO;
@@ -9,6 +8,7 @@ import Enos.SpringProject.medVoll.domain.models.dto.reads.ReadUpdatedPatientDTO;
 import Enos.SpringProject.medVoll.domain.models.dto.registers.RegisterPatientDTO;
 import Enos.SpringProject.medVoll.domain.models.dto.updates.UpdatePatientDTO;
 import Enos.SpringProject.medVoll.domain.repositorys.IPatientRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,7 +48,7 @@ public class PatientService {
     public ReadDetailedPatientDTO getPatientByCPF(String cpf) {
         var patient = patientRepository.findByCpfAndActive(cpf,1);
         if (patient == null){
-            throw new RequestBdException("o cpf do paciente é invalido");
+            throw new EntityNotFoundException("O cpf do paciente não existe no Banco de Dados");
         }
         return new ReadDetailedPatientDTO(patient);
     }
@@ -57,7 +57,7 @@ public class PatientService {
     public ReadUpdatedPatientDTO updatePatient(UpdatePatientDTO updatePatientDTO) {
         var patient = patientRepository.getReferenceByIdAndActive(updatePatientDTO.id(),1);
         if (patient == null){
-            throw new RequestBdException("o id do paciente é invalido");
+            throw new EntityNotFoundException("o id do paciente é invalido");
         }
         patient.updateData(updatePatientDTO);
         return new ReadUpdatedPatientDTO(patient);
@@ -67,7 +67,7 @@ public class PatientService {
     public void deletePatient(Long id) {
         var patient = patientRepository.getReferenceByIdAndActive(id,1);
         if (patient == null){
-            throw new RequestBdException("o id do paciente é invalido");
+            throw new EntityNotFoundException("o id do paciente é invalido");
         }
         patient.patientDeleteLogical();
     }

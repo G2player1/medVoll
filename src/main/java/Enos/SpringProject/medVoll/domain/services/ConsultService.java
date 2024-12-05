@@ -11,6 +11,7 @@ import Enos.SpringProject.medVoll.domain.models.dto.registers.RegisterConsultDTO
 import Enos.SpringProject.medVoll.domain.repositorys.IConsultRepository;
 import Enos.SpringProject.medVoll.domain.repositorys.IDoctorRepository;
 import Enos.SpringProject.medVoll.domain.repositorys.IPatientRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -78,10 +79,10 @@ public class ConsultService {
     private void validateConsultRegister(LocalDateTime schedule, Doctor doctor, Patient patient){
         var aux = LocalDateTime.now();
         if (patient == null){
-            throw new RequestBdException("não foi possivel resgatar o paciente do banco de dados");
+            throw new EntityNotFoundException("não foi possivel resgatar o paciente do banco de dados");
         }
         if (doctor == null){
-            throw new RequestBdException("não foi possivel resgatar o medico do banco de dados");
+            throw new EntityNotFoundException("não foi possivel resgatar o medico do banco de dados");
         }
         if (schedule == null){
             throw new RegisterConsultRuleException("não foi possivel definir o horario");

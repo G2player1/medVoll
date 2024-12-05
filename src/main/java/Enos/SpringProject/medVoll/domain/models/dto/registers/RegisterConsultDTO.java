@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record RegisterConsultDTO(
         Long medico_id,
+        @NotNull
         String especialidade,
         @NotNull
         Long paciente_id,

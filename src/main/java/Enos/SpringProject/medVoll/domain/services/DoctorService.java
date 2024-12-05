@@ -1,7 +1,6 @@
 package Enos.SpringProject.medVoll.domain.services;
 
 import Enos.SpringProject.medVoll.domain.enums.ExpertiseEnum;
-import Enos.SpringProject.medVoll.domain.exceptions.RequestBdException;
 import Enos.SpringProject.medVoll.domain.models.Address;
 import Enos.SpringProject.medVoll.domain.models.Doctor;
 import Enos.SpringProject.medVoll.domain.models.Expertise;
@@ -13,6 +12,7 @@ import Enos.SpringProject.medVoll.domain.models.dto.registers.RegisterExpertiseD
 import Enos.SpringProject.medVoll.domain.models.dto.updates.UpdateDoctorDTO;
 import Enos.SpringProject.medVoll.domain.repositorys.IDoctorRepository;
 import Enos.SpringProject.medVoll.domain.repositorys.IPatientRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -59,8 +59,7 @@ public class DoctorService {
     @Transactional
     public Page<ReadDoctorDTO> getDoctorsInDbByExpertise(String expertise) {
         List<ReadDoctorDTO> doctorList;
-        List<Doctor> aux;
-        aux = doctorRepository.findByExpertises_ExpertiseAndActive(ExpertiseEnum.fromString(expertise),1);
+        List<Doctor> aux = doctorRepository.findByExpertises_ExpertiseAndActive(ExpertiseEnum.fromString(expertise),1);
         aux.forEach(doctor -> doctor.getExpertises().removeIf(expertise1 -> !expertise1.isActive()));
         doctorList = aux
                 .stream()
@@ -73,7 +72,7 @@ public class DoctorService {
     public ReadUpdatedDoctorDTO updateDoctor(UpdateDoctorDTO updateDoctorDTO) {
         var doctor = doctorRepository.getReferenceByIdAndActive(updateDoctorDTO.id(),1);
         if (doctor == null){
-            throw new RequestBdException("o id do medico é invalido");
+            throw new EntityNotFoundException("o id do medico é invalido");
         }
         doctor.updateData(updateDoctorDTO);
         return new ReadUpdatedDoctorDTO(doctor);
@@ -83,7 +82,7 @@ public class DoctorService {
     public void deleteDoctorById(Long id) {
         var doctor = doctorRepository.getReferenceByIdAndActive(id,1);
         if (doctor == null){
-            throw new RequestBdException("o id do medico é invalido");
+            throw new EntityNotFoundException("o id do medico é invalido");
         }
         doctor.doctorDeleteLogical();
     }
@@ -92,7 +91,7 @@ public class DoctorService {
     public ReadDetailedDoctorDTO getDoctorById(Long id) {
         var doctor = doctorRepository.getReferenceByIdAndActive(id,1);
         if (doctor == null){
-            throw new RequestBdException("o id do medico é invalido");
+            throw new EntityNotFoundException("o id do medico é invalido");
         }
         return new ReadDetailedDoctorDTO(doctor);
     }
