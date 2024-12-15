@@ -1,4 +1,4 @@
-package Enos.SpringProject.medVoll.infra.security;
+package Enos.SpringProject.medVoll.domain.exceptions;
 
 public class CreationTokenException extends RuntimeException {
 

@@ -2,7 +2,7 @@ package Enos.SpringProject.medVoll.infra.exception;
 
 import Enos.SpringProject.medVoll.domain.exceptions.CantGetEnumException;
 import Enos.SpringProject.medVoll.domain.exceptions.RegisterConsultRuleException;
-import Enos.SpringProject.medVoll.infra.security.CreationTokenException;
+import Enos.SpringProject.medVoll.domain.exceptions.CreationTokenException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
