@@ -3,7 +3,7 @@ package Enos.SpringProject.medVoll.controllers;
 import Enos.SpringProject.medVoll.domain.models.User;
 import Enos.SpringProject.medVoll.domain.models.dto.reads.ReadTokenDTO;
 import Enos.SpringProject.medVoll.domain.models.dto.registers.RegisterUserDTO;
-import Enos.SpringProject.medVoll.domain.services.TokenService;
+import Enos.SpringProject.medVoll.infra.security.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
