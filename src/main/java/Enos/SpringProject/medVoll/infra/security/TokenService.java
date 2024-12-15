@@ -1,6 +1,6 @@
 package Enos.SpringProject.medVoll.infra.security;
 
-import Enos.SpringProject.medVoll.domain.models.User;
+import Enos.SpringProject.medVoll.domain.models.user.User;
 import Enos.SpringProject.medVoll.domain.exceptions.CreationTokenException;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

@@ -1,6 +1,6 @@
 package Enos.SpringProject.medVoll.infra.security;
 
-import Enos.SpringProject.medVoll.domain.repositorys.IUserRepository;
+import Enos.SpringProject.medVoll.domain.models.user.IUserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

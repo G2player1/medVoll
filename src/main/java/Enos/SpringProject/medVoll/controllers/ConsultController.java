@@ -1,8 +1,8 @@
 package Enos.SpringProject.medVoll.controllers;
 
-import Enos.SpringProject.medVoll.domain.models.dto.reads.ReadConsultDTO;
-import Enos.SpringProject.medVoll.domain.models.dto.registers.RegisterConsultDTO;
-import Enos.SpringProject.medVoll.domain.services.ConsultService;
+import Enos.SpringProject.medVoll.domain.models.consult.dto.ReadConsultDTO;
+import Enos.SpringProject.medVoll.domain.models.consult.dto.RegisterConsultDTO;
+import Enos.SpringProject.medVoll.domain.models.consult.ConsultService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
