@@ -1,6 +1,7 @@
 package Enos.SpringProject.medVoll.infra.exception;
 
 import Enos.SpringProject.medVoll.domain.exceptions.CantGetEnumException;
+import Enos.SpringProject.medVoll.domain.exceptions.InvalidTokenException;
 import Enos.SpringProject.medVoll.domain.exceptions.RegisterConsultRuleException;
 import Enos.SpringProject.medVoll.domain.exceptions.CreationTokenException;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,12 +27,20 @@ public class ErrorHandler {
 
     @ExceptionHandler(RegisterConsultRuleException.class)
     public ResponseEntity handleRegisterConsultRuleException(RegisterConsultRuleException e){
-        return ResponseEntity.internalServerError().body(e.getMessage());
+        return ResponseEntity.internalServerError().body(new ErrorDTO(e.getMessage()));
     }
 
     @ExceptionHandler(CreationTokenException.class)
     public ResponseEntity handleCreationTokenError(CreationTokenException e){
-        return ResponseEntity.internalServerError().body(e.getMessage());
+        return ResponseEntity.internalServerError().body(new ErrorDTO(e.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity handleInvalidTokenError(InvalidTokenException e){
+        return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage()));
+    }
+
+    private record ErrorDTO(String error){
     }
 
     private record ErrorValidationData(String field, String message){

@@ -1,5 +1,6 @@
 package Enos.SpringProject.medVoll.infra.security;
 
+import Enos.SpringProject.medVoll.domain.exceptions.InvalidTokenException;
 import Enos.SpringProject.medVoll.domain.models.user.User;
 import Enos.SpringProject.medVoll.domain.exceptions.CreationTokenException;
 import com.auth0.jwt.JWT;
@@ -43,7 +44,7 @@ public class TokenService {
                     .verify(tokenJWT)
                     .getSubject();
         } catch (JWTVerificationException exception){
-            throw new RuntimeException("Error: Invalid TokenJWT or Expired TokenJWT");
+            throw new InvalidTokenException("Error: Invalid TokenJWT or Expired TokenJWT");
         }
     }
 
