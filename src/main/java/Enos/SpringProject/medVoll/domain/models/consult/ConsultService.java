@@ -1,5 +1,6 @@
 package Enos.SpringProject.medVoll.domain.models.consult;
 
+import Enos.SpringProject.medVoll.domain.models.consult.validadeServices.IConsultValidate;
 import Enos.SpringProject.medVoll.domain.models.expertise.ExpertiseEnum;
 import Enos.SpringProject.medVoll.domain.exceptions.RegisterConsultRuleException;
 import Enos.SpringProject.medVoll.domain.exceptions.RequestBdException;
@@ -31,12 +32,20 @@ public class ConsultService {
     private IDoctorRepository doctorRepository;
     @Autowired
     private IPatientRepository patientRepository;
+    @Autowired
+    private List<IConsultValidate> validates;
 
     @Transactional
     public ReadConsultDTO registerConsult(RegisterConsultDTO registerConsultDTO) {
         var schedule = LocalDateTime.parse(registerConsultDTO.horario(),DateTimeFormatter.ofPattern("dd/MM/uuuu:HH:mm:ss"));
         var patient = patientRepository.getReferenceByIdAndActive(registerConsultDTO.paciente_id(), 1);
         var doctor = selectDoctor(registerConsultDTO.medico_id(),registerConsultDTO.especialidade(),schedule);
+        if(doctor == null){
+            throw new EntityNotFoundException("Doctor not found");
+        }
+        if (patient == null){
+            throw new EntityNotFoundException("Patient not found");
+        }
         validateConsultRegister(schedule,doctor,patient);
         Consult consult = new Consult(doctor,patient,schedule);
         doctor.addConsult(consult);
@@ -75,44 +84,7 @@ public class ConsultService {
     }
     
     private void validateConsultRegister(LocalDateTime schedule, Doctor doctor, Patient patient){
-        var aux = LocalDateTime.now();
-        if (patient == null){
-            throw new EntityNotFoundException("não foi possivel resgatar o paciente do banco de dados");
-        }
-        if (doctor == null){
-            throw new EntityNotFoundException("não foi possivel resgatar o medico do banco de dados");
-        }
-        if (schedule == null){
-            throw new RegisterConsultRuleException("não foi possivel definir o horario");
-        }
-        if (schedule.getDayOfWeek() == DayOfWeek.SUNDAY){
-            throw new RegisterConsultRuleException("não se pode agendar no domingo");
-        }
-        if (!(schedule.getHour() >= 7 && schedule.getHour() <= 19)){
-            throw new RegisterConsultRuleException("não é possivel agendar fora do horario de trabalho");
-        }
-        if(ChronoUnit.MINUTES.between(aux,schedule) < 30){
-            throw new RegisterConsultRuleException("agendamento deve ter pelo menos 30 min de antecedencia");
-        }
-        if (schedule.isBefore(aux)){
-            throw new RegisterConsultRuleException("data de agendamento é invalida");
-        }
-        for (Consult c : patient.getConsults()){
-            if (c.getActive() != 0){
-                if((c.getScheduleStart().getDayOfMonth() == schedule.getDayOfMonth())
-                        && (c.getScheduleStart().getMonth() == schedule.getMonth())
-                        && (c.getScheduleStart().getYear() == schedule.getYear())){
-                    throw new RegisterConsultRuleException("um paciente so pode ter uma consulta por dia");
-                }
-            }
-        }
-        for (Consult c : doctor.getConsults()){
-            if(c.getActive() != 0) {
-                if (!schedule.isBefore(c.getScheduleStart()) && !schedule.isAfter(c.getScheduleEnd()) || schedule.isEqual(c.getScheduleStart())) {
-                    throw new RegisterConsultRuleException("o medico indicado ja possui consulta nesse horario");
-                }
-            }
-        }
+        validates.forEach(iConsultValidate -> iConsultValidate.validate(schedule,doctor,patient));
     }
 
     @Transactional
