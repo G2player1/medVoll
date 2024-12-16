@@ -6,6 +6,7 @@ import Enos.SpringProject.medVoll.domain.models.patient.dto.ReadUpdatedPatientDT
 import Enos.SpringProject.medVoll.domain.models.patient.dto.RegisterPatientDTO;
 import Enos.SpringProject.medVoll.domain.models.patient.dto.UpdatePatientDTO;
 import Enos.SpringProject.medVoll.domain.models.patient.PatientService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("patients")
+@SecurityRequirement(name = "bearer-key")
 public class PatientController {
 
     @Autowired

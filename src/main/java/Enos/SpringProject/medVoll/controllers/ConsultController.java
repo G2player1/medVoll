@@ -3,6 +3,7 @@ package Enos.SpringProject.medVoll.controllers;
 import Enos.SpringProject.medVoll.domain.models.consult.dto.ReadConsultDTO;
 import Enos.SpringProject.medVoll.domain.models.consult.dto.RegisterConsultDTO;
 import Enos.SpringProject.medVoll.domain.models.consult.ConsultService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("consults")
+@SecurityRequirement(name = "bearer-key")
 public class ConsultController {
 
     @Autowired
